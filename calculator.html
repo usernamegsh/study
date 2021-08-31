@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>계산기</title>
+  <style>
+    * { box-sizing: border-box }
+    #result { width: 180px; height: 50px; margin: 5px; text-align: right }
+    #operator { width: 50px; height: 50px; margin: 5px; text-align: center }
+    button { width: 50px; height: 50px; margin: 5px }
+  </style>
+</head>
+
+<!--계산기버튼구현-->
+<body>
+  <input readonly id="operator">
+  <input readonly type="number" id="result">
+  <div class="row">
+    <button id="num-7">7</button>
+    <button id="num-8">8</button>
+    <button id="num-9">9</button>
+    <button id="plus">+</button>
+  </div>
+  <div class="row">
+    <button id="num-4">4</button>
+    <button id="num-5">5</button>
+    <button id="num-6">6</button>
+    <button id="minus">-</button>
+  </div>
+  <div class="row">
+    <button id="num-1">1</button>
+    <button id="num-2">2</button>
+    <button id="num-3">3</button>
+    <button id="divide">/</button>
+  </div>
+  <div class="row">
+    <button id="clear">C</button>
+    <button id="num-0">0</button>
+    <button id="calculate">=</button>
+    <button id="multiply">x</button>
+  </div>
+  
+
+
+<script>
+let numOne = '';
+let operator = '';
+let numTwo = '';
+const $operator = document.querySelector('#operator');
+const $result = document.querySelector('#result');
+const onClickNumber = (event) => {
+  if (!operator) { /* 'operator 변수가 비어 있다'면 numOne에 숫자 저장 */ 
+    numOne += event.target.textContent; // numOne에 입력된 숫자를 더함 (문자형으로)
+    $result.value += event.target.textContent;  
+    return;
+  }
+  if (!numTwo) {  /* numTwo가 공백이라면 결과값 공백*/
+    $result.value = '';
+  }
+  numTwo += event.target.textContent; //operator가 공백이 아닐 경우, numTwo에 입력된 숫자를 더함 (문자형으로)
+  $result.value += event.target.textContent;  
+};
+document.querySelector('#num-0').addEventListener('click', onClickNumber);
+document.querySelector('#num-1').addEventListener('click', onClickNumber);
+document.querySelector('#num-2').addEventListener('click', onClickNumber);
+document.querySelector('#num-3').addEventListener('click', onClickNumber);
+document.querySelector('#num-4').addEventListener('click', onClickNumber);
+document.querySelector('#num-5').addEventListener('click', onClickNumber);
+document.querySelector('#num-6').addEventListener('click', onClickNumber);
+document.querySelector('#num-7').addEventListener('click', onClickNumber);
+document.querySelector('#num-8').addEventListener('click', onClickNumber);
+document.querySelector('#num-9').addEventListener('click', onClickNumber);
+const onClickOperator = (op) => () => {
+  if (numOne) { //numOne이 입력된 상태에서 Operator 클릭 시, op = onClickOperator 인수(+-/*) 
+    operator = op;
+    $operator.value = op;
+  } else {
+    alert('숫자를 먼저 입력하세요.');
+  }
+};
+document.querySelector('#plus').addEventListener('click',onClickOperator('+'));
+document.querySelector('#minus').addEventListener('click', onClickOperator('-'));
+document.querySelector('#divide').addEventListener('click', onClickOperator('/'));
+document.querySelector('#multiply').addEventListener('click', onClickOperator('*'));
+
+document.querySelector('#calculate').addEventListener('click', () => {
+  if (numTwo) { //numTwo가 입력된 상황이면 switch 구문 실행,  <> 아니면 else 구문 실행 
+    switch (operator) {
+      case '+':
+        $result.value = parseInt(numOne) + parseInt(numTwo);
+        break;
+      case '-':
+        $result.value = numOne - numTwo;
+        break;
+      case '*':
+        $result.value = numOne * numTwo;
+        break;
+      case '/':
+        $result.value = numOne / numTwo;
+        break;
+      default:
+        break;
+    }
+    $operator.value = ''; // 계산이 끝난 시점에서 oprator를 초기화
+    numOne = $result.value; // 계산이 끝난 시점에서 numOne을 현재값으로 지정
+    operator = ''; // 계산이 끝난 시점에서 oprator를 초기화
+    numTwo = ''; // 계산이 끝난 시점에서 numTwo를 초기화
+    // 2회차 operator 클릭 시, >> 
+    // 1) 기존 결과값을 numOne으로 지정
+    // 2) onClickNumber 함수 실행을 통해 numTwo에 입력된 숫자를 더함(문자형으로)
+    // 3) calculate 실행 시, A+B+C에 대한 계산값 도출
+    // 4) 1로 원상복귀
+  } else {
+    alert('숫자를 먼저 입력하세요.');
+  }
+});
+document.querySelector('#clear').addEventListener('click', () => {
+  numOne = '';
+  operator = '';
+  numTwo = '';
+  $operator.value = '';
+  $result.value = '';
+});
+
+
+
+
+</script>
+</body>
