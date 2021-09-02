@@ -1,0 +1,86 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>숫자야구</title>
+</head>
+<body>
+<form id="form">
+  <input type="text" id="input">
+  <button>확인</button>
+  <button>곽성현곽성현김ㄱ다 /n 윤다윧ㄴ아구기최솔최솔초시롯쵝박진비잔비 </button>
+  <button>html 버튼 버튼 버튼 버튼버튼</button>
+
+  <input type="text" id="input 22">
+</form>
+<div id="logs"></div>
+<script>
+  const $input = document.querySelector('#input');
+  const $form = document.querySelector('#form');
+  const $logs = document.querySelector('#logs');
+
+  const numbers = []; // {1,2,3,4,5,6,7,8,9}
+  for (let n = 1 ; n < 10 ; n++) { 
+    numbers.push(n); 
+  }
+
+  const answer = []; // 무작위 4자리 숫자
+  for (let n = 0; n <= 3 ; n += 1) {
+    const index = Math.floor(Math.random() * numbers.length ) // 0 이상 8이하 
+    answer.push(numbers[index]);
+    numbers.splice(index, 1)
+  }
+  console.log('답은 바로  '+answer);
+
+  const tries = [];
+  function checkInput(input) {
+    if (input.length !== 4) {
+      return alert('4자리 숫자를 입력해주세요');
+    }
+    if (new Set(input).size !== 4) { // TODO: New(10장에서 설명)와 Set에 대해서 개념정리하기
+      // Set은 중복을 허용하지 않는 특수 배열
+      // Ex) new Set('1231') >> Set { '123' }
+      retrun alert('중복되지 않게 입력해주세요 ~'); 
+    }
+    if (tries.include(input)) { //
+      return alert('이미 시도한 값입니다')
+    }
+  }
+  $form.addEventListener('submit',(event) >= {
+    event.preventDefault();  // 폼 태그의 기본동작(새로고침)을 취소하는 코드
+    const value = $input.value;
+    $input.value = '';
+    const vaild = checkInput(value);
+    if (!valid) return;
+    if (answer.join('') === value) {
+      $logs.textContent = '홈런!';
+      return;
+    }
+    if (tries.length >= 9) {
+      const message = document.createTextNode('패배! 정답은 ${answer.join('')}'); // TODO : '텍스트 안에 ${태그명} 넣는 기능 개념 정리'
+      $logs.appendChild(message); // TODO: appendChild가 뭔지 개념 정리
+      return;
+    }
+
+  })
+
+  let strike = 0 ;
+  let ball = 0 ;
+  for (let i = 0; i < answer.length; i++) {
+    const index = value.indexOf(answer[i]) // index = -1 Or 0~3
+    if ( index > -1 ) { // value 값 안에 answer[i]가 포함되어 있으면
+      if ( index === i) {
+        // 자리값도 같으면
+        strike += 1;
+      } eles { //자리값이 같지 않으면, 숫자만 같으면
+        ball += 1;        
+      } 
+    }
+  }
+  $logs.append('$[value}: ${strike} 스트라이크 ${ball] 볼', document.createElement('br'));
+    tries.push(value);
+    // TODO: 1) 실행안되는 문제가 무엇인지 찾아서 해결하거나, 코드 새로 작성 2) foreach 반복문 적용한 버전 업데이트
+    // TODO: git 명령어로 파일 업데이트 하는 방법 복습 다음 파일부터는 파일 직접 등록이 아닌 명령어를 통한 업데이트
+
+</script>
+</body>
+</html>
