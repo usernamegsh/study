@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>로또추첨기</title>
+  <style>
+    .ball {
+      display: inline-block;
+      border: 5px solid black;
+      border-radius: 20px;
+      width: 100px;
+      height: 100px;
+      line-height: 100px; 
+      font-size: 100px; 
+      text-align: left;  
+      margin-right: 1px; /* 우측 마진 */
+    }
+  </style>
+
+</head>
+
+<body> 
+    <!-- html 주석처리 방식 -->
+    <!-- https://www.youtube.com/watch?v=Qy7na31qYVw 이거 보고 정리안되면 왜 다른 주석처리 방식인지 여쭤보기-->
+<div id="result">추첨 결과는?</div> 
+<div id="bonus">보너스: </div>
+
+<script> // TODO: body 영역의 텍스트 크기 조절 https://www.youtube.com/watch?v=pcOkHx1x3Y4
+// TODO: html 주석 처리 https://www.youtube.com/watch?v=Qy7na31qYVw >> <!-- 주석 내용 -->
+
+
+
+// TODO: CSS & Script = 주석 처리 방식 공유     /    HTML(Body) = css&script의 주석 방식 공유하지 않음 
+// 위 내용이 맞는지?
+
+
+    const candidate = Array(45).fill().map((v, i) => i + 1); // 배열 생성
+    const shuffle = [];
+
+    for (let i = candidate.length; i > 0; i--) {
+        const random = Math.floor(Math.random() * i);
+        const spliceArray = candidate.splice(random, 1);
+        const value = spliceArray[0];
+        shuffle.push(value);
+    }
+
+    console.log(shuffle);
+    const winBalls = shuffle.slice(0, 6).sort((a, b) => a - b); // 정렬 a-b > 오름차순 , b-a 내림차순
+    const bonus = shuffle[6];
+    console.log(winBalls, bonus);
+
+    function colorize(number, $tag) { /* 이름형 red,white , RGB , RGBA(알파 = 투명도),  */
+        if (number < 10) {
+        $tag.style.backgroundColor = 'red';
+        $tag.style.color = 'white';
+        } else if (number < 20) {
+        $tag.style.backgroundColor = 'orange';
+        } else if (number < 30) {
+        $tag.style.backgroundColor = 'yellow';
+        } else if (number < 40) {
+        $tag.style.backgroundColor = 'blue';
+        $tag.style.color = 'white';
+        } else {
+        $tag.style.backgroundColor = 'green';
+        $tag.style.color = 'white';
+        }
+    }
+
+    const $result = document.querySelector('#result');
+    function drawBall(number, $parent) {
+        const $ball = document.createElement('div');
+        $ball.className = 'ball';
+        colorize(number, $ball);
+        $ball.textContent = number;
+        $parent.appendChild($ball);
+    }
+
+    for (let i = 0; i < winBalls.length; i++) {
+        setTimeout(() => {
+        drawBall(winBalls[i], $result);
+        }, 1000 * (i + 1))
+    }
+
+    const $bonus = document.querySelector('#bonus');
+    setTimeout(() => {
+    drawBall(bonus, $bonus);
+    }, 7000);
+
+</script>
+</body>
+
