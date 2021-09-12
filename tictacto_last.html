@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>틱택토</title>
+<style> /*  */ 
+  table {
+    border-collapse: collapse;
+  }
+
+  td {
+    border: 1px solid black;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <!--table 태그로 여기부터 표라는 사실을 브라우져에 알려주고, 
+  tr태그로 가로줄을 만든다음, td태그로 그 가로줄을 여러개의 셀(칸)으로 나누게 되는거죠.-->
+  <table>
+  <!--  <tr>
+      <td id="td00"></td>
+      <td id="td01"></td>
+      <td id="td02"></td>
+    </tr>
+    <tr>
+      <td id="td10"></td>
+      <td id="td11"></td>
+      <td id="td12"></td>
+    </tr>
+    <tr>
+      <td id="td20"></td>
+      <td id="td21"></td>
+      <td id="td22"></td>
+    </tr> -->
+  </table>
+
+<script>
+  const { body } = document; // 구조분해 할당
+  const $table = document.createElement('table')
+  const $result = document.createElement('div')
+  const rows = []; 
+  let turn = 'O';
+
+  const callback = (event) => {
+    if (event.target.textContent !== '') {
+      console.log('빈칸이 아님');
+    } else {
+      console.log('빈칸임');
+      event.target.textContent = turn;
+      turn = turn === 'X' ? 'O' : 'X'; // 삼항연산자 turn===X 가 트루면 'O', 아니면 'X'
+    }
+  };
+
+  
+  for (let i = 1; i<=3; i++) {
+    const cells = [];
+    const $tr = document.createElement('tr');
+    for (let j=1; j<=3; j++) {
+      const $td = document.createElement('td');
+      // $td.addEventListener('click', callback) // 칸을 만들고, 클릭 이벤트 추가
+      cells.push($td);
+      $tr.appendChild($td);
+    }
+    rows.push(cells);
+    $table.appendChild($tr);
+    $table.addEventListener('click', callback)  
+}
+body.appendChild($table);
+body.appendChild($result);
+
+
+/* TODO: 질문 table 태그를 클릭했는데, 왜 callback 함수의 event.target이 td인지?
+https://thebook.io/080270/part02/ch09/04-03/ 답변...
+event.target은 이벤트가 발생한 직접적인 대상입니다.
+이벤트 버블링 = 자식,자손 태그에서 발생한 이벤트를 부모 태그에서도 발생시키는 것
+>> table의 자손/자식인 tr/td에서 발생한 이벤트가 table에서도 발생함
+table의 event.target을 설정하면 그 하위의 tr/td의 이벤트 추적 가능 */
+
+/* TODO: 9.5 승부 판단하기 https://thebook.io/080270/part02/ch09/05/
+ 
+*/
+
+</script>
+</body>
+</html>
